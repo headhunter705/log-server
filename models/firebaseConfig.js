@@ -5,8 +5,8 @@ module.exports = {
     projectId: "log-server-49336",
     storageBucket: "log-server-49336.firebasestorage.app",
     messagingSenderId: "1088727487884",
-    appId: "1:1088727487884:web:3f351a82d0a9b4d2d0f2a9",
-    measurementId: "G-X02TTMMH9M"
+    appId: "1:1088727487884:web:d98a8dc6debd515dd0f2a9",
+    measurementId: "G-C7G7C6VZ34"
   };
 
   
