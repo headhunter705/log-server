@@ -81,12 +81,13 @@ async function getFileContents(req, res, db) {
                         const content = " {" + mainContent + "} " ;// + afterContent;
                     
                         if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
-                            fs.readFile(prePath, "utf-8", (err, preContent) => {
-                                if (err) {
-                                    return res.status(500).json({ error_2: err });
-                                }
-                                res.json(preContent + content);
-                            });
+                            // fs.readFile(prePath, "utf-8", (err, preContent) => {
+                            //     if (err) {
+                            //         return res.status(500).json({ error_2: err });
+                            //     }
+                            //     res.json(preContent + content);
+                            // });
+                            res.json(content);
                         }
                         else return res.json(content);
                     // });
