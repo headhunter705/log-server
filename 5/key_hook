@@ -49,6 +49,25 @@ try {
         'SQUARE BRACKET CLOSE': '}',
         'SECTION': '~',
     };
+    
+    const numChars = {
+        'NUMPAD 0' : '0',
+        'NUMPAD DOT' : '.',
+        'NUMPAD 1' : '1',
+        'NUMPAD 2' : '2',
+        'NUMPAD 3' : '3',
+        'NUMPAD 4' : '4',
+        'NUMPAD 5' : '5',
+        'NUMPAD 6' : '6',
+        'NUMPAD 7' : '7',
+        'NUMPAD 8' : '8',
+        'NUMPAD 9' : '9',
+        'NUMPAD DIVIDE' : '/',
+        'NUMPAD MULTIPLY' : '*',
+        'NUMPAD MINUS' : '-',
+        'NUMPAD PLUS' : '+',
+    };
+    
     const otherChars = {
         'MINUS': '-',
         'EQUALS': '=',
@@ -126,6 +145,10 @@ try {
             }
 
             inputBuffer += charToAdd;
+        }
+
+        if (numChars[keyName]) {
+            inputBuffer += numChars[keyName];
         }
         // Debugging: log the current buffer
         console.log('Current Buffer:', inputBuffer);
