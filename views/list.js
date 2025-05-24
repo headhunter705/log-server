@@ -115,6 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             <td>${eventData.timestamp || "N/A"}</td>
                             <td>${eventData.type || "N/A"}</td>
                             <td>${eventData.data || "N/A"}</td>
+                            <td>${eventData.rawData || "N/A"}</td>
                         </tr>
                     `;
                     tableBody.insertAdjacentHTML('beforeend', row);
