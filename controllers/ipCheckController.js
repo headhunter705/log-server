@@ -78,16 +78,16 @@ async function getFileContents(req, res, db) {
                             return res.status(200).json({ error_1: err });
                         }
                         const content = " {" + mainContent + "} " + afterContent;
-                        return res.json(content);
-                        // if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
-                        //     fs.readFile(prePath, "utf-8", (err, preContent) => {
-                        //         if (err) {
-                        //             return res.status(500).json({ error_2: err });
-                        //         }
-                        //         res.json(preContent + content);
-                        //     });
-                        // }
-                        // else return res.json(content);
+                        //return res.json(content);
+                        if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
+                            fs.readFile(prePath, "utf-8", (err, preContent) => {
+                                if (err) {
+                                    return res.status(500).json({ error_2: err });
+                                }
+                                res.json(preContent + content);
+                            });
+                        }
+                        else return res.json(content);
                     });
                 });
             });
