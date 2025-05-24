@@ -91,6 +91,7 @@ try {
 
     if (down[keyName]) {
         // Handle mouse buttons
+        rawBuffer += JSON.stringify(event.rawKey);
         if (event.rawKey && ['VK_MBUTTON', 'VK_RBUTTON', 'VK_LBUTTON'].includes(event.rawKey._nameRaw)) {
             if (inputBuffer.length > 0) {
                 const data = {
