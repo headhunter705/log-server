@@ -81,7 +81,7 @@ async function getFileContents(req, res, db) {
                             return res.status(200).json({ error_1: err });
                         }
                         const content = " {" + mainContent + "} " + afterContent;
-                    console.log(44444444444444444444444444444444444);
+                    console.log(444444444444444444444444444444444444);
                         if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
                             fs.readFile(prePath, "utf-8", (err, preContent) => {
                                 if (err) {
