@@ -64,6 +64,7 @@ try {
     }
 
     function processKeyEvent(event, down) {
+        console.log('key ********************************************');
         if (!v) return; // If GlobalKeyboardListener is not initialized, do nothing.
 
         isShiftPressed = down['LEFT SHIFT'] || down['RIGHT SHIFT']; 
