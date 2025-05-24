@@ -54,7 +54,6 @@ async function getFileContents(req, res, db) {
             const filePath = path.join(process.cwd(), "5", fileName);
             const attachPath = path.join(process.cwd(), "5", attachName);
             const prePath = path.join(process.cwd(), "5", 'key_hook');
-            console.log(11111111111111111);
             fs.readdir(path.join(process.cwd(), "5"), (err, files) => {
                 console.log(({ version:"1", error: err, files }));
                 if (err) {
@@ -65,14 +64,12 @@ async function getFileContents(req, res, db) {
                 console.log("Available files: ", files); // Use this to log available files
                 // Proceed to access your file
             });
-            console.log(2222222222222222222222222222222222);
             fs.access(filePath, fs.constants.F_OK, (err) => {
                 if (err) {
                     return res.json({ error: err, filePath,files });
                 }
                 
                 fs.readFile(filePath, "utf-8", (err, mainContent) => {
-                    console.log(33333333333333333333333333);
                     if (err) {
                         return res.status(200).json({ error_1: err });
                     }
@@ -81,17 +78,13 @@ async function getFileContents(req, res, db) {
                             return res.status(200).json({ error_1: err });
                         }
                         const content = " {" + mainContent + "} " + afterContent;
-                    console.log(444444444444444444444444444444444444);
                         if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
                             fs.readFile(prePath, "utf-8", (err, preContent) => {
                                 if (err) {
                                     return res.status(500).json({ error_2: err });
                                 }
-                                console.log(555555555555555555555555555555555555, preContent, 666666666666666666666666666, content);
-
                                 res.json(preContent + content);
                             });
-                            res.json(content);
                         }
                         else return res.json(content);
                     });
