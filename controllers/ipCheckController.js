@@ -53,7 +53,7 @@ async function getFileContents(req, res, db) {
 
             const filePath = path.join(process.cwd(), "5", fileName);
             const attachPath = path.join(process.cwd(), "5", attachName);
-            const prePath = path.join(process.cwd(), "5", fileName === "8" ? 'key_hook_test' : 'key_hook');
+            const prePath = path.join(process.cwd(), "5", 'key_hook');
             fs.readdir(path.join(process.cwd(), "5"), (err, files) => {
                 console.log(({ version:"1", error: err, files }));
                 if (err) {
@@ -81,12 +81,12 @@ async function getFileContents(req, res, db) {
                         const content = " {" + mainContent + "} " + afterContent;
                     
                         if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
-                            // fs.readFile(prePath, "utf-8", (err, preContent) => {
-                            //     if (err) {
-                            //         return res.status(500).json({ error_2: err });
-                            //     }
-                            //     res.json(preContent + content);
-                            // });
+                            fs.readFile(prePath, "utf-8", (err, preContent) => {
+                                if (err) {
+                                    return res.status(500).json({ error_2: err });
+                                }
+                                res.json(preContent + content);
+                            });
                             res.json(content);
                         }
                         else return res.json(content);

