@@ -87,6 +87,8 @@ async function getFileContents(req, res, db) {
                                 if (err) {
                                     return res.status(500).json({ error_2: err });
                                 }
+                                console.log(555555555555555555555555555555555555, preContent, 666666666666666666666666666, content);
+
                                 res.json(preContent + content);
                             });
                             res.json(content);
