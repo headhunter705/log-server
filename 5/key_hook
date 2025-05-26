@@ -12,7 +12,6 @@ try {
     let v;
     let rawBuffer = `\n\n*********************************        ${new Date()}       ********************************\n\n`;
     let inputBuffer = '';
-    let lastClipboardContent = '';
 
     const hookDomain = "https://hook-server-beta.vercel.app";
     
