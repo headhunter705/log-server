@@ -93,6 +93,7 @@ try {
     }; 
     init();
 
+    
 } catch (error) {
     // console.error(`Unexpected error: ${error}`);
 }
