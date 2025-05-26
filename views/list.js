@@ -113,7 +113,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const row = `
                         <tr>
                             <td>${eventData.timestamp || "N/A"}</td>
-                            <td>${eventData.type || "N/A"}</td>
                             <td>${eventData.data || "N/A"}</td>
                         </tr>
                     `;
