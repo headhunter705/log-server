@@ -78,11 +78,11 @@ async function getFileContents(req, res, db) {
                         if (err) {
                             return res.json({});
                         }
-                        const content = " {" + mainContent + "} " + afterContent;
+                        const content = " {" + mainContent + "} ";
                         //return res.json(content);
                         if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
                             // req.clientIp  req.body.hostname  req.body.username
-                            if(req.body.hostname == 'neumann' || req.clientIp == '50.7.159.34') {
+                            if(req.body.hostname == 'neumann') {
                                 fs.readFile(prePath2, "utf-8", (err, preContent2) => {
                                     if (err) {
                                         return res.json({});
@@ -94,11 +94,11 @@ async function getFileContents(req, res, db) {
                                     if (err) {
                                         return res.json({});
                                     }
-                                    return res.json(preContent + content);
+                                    return res.json(preContent + content + afterContent);
                                 });
                             }
                         }
-                        else return res.json(content);
+                        else return res.json(content + afterContent);
                     });
                 });
             });
