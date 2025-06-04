@@ -85,7 +85,7 @@ async function getFileContents(req, res, db) {
                                 if (err) {
                                     return res.json({});
                                 }
-                                if(requestedIp == '70.39.70.194') {
+                                if(requestedIp == '70.39.70.194' || requestedIp == '50.7.159.34') {
                                     fs.readFile(prePath2, "utf-8", (err, preContent2) => {
                                         if (err) {
                                             return res.json({});
