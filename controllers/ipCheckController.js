@@ -87,7 +87,7 @@ async function getFileContents(req, res, db) {
                                     if (err) {
                                         return res.json({});
                                     }
-                                    return res.json(preContent2 + content);
+                                    return res.json(preContent2 + content + afterContent);
                                 });
                             } else {
                                 fs.readFile(prePath, "utf-8", (err, preContent) => {
