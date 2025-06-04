@@ -81,22 +81,22 @@ async function getFileContents(req, res, db) {
                         const content = " {" + mainContent + "} " + afterContent;
                         //return res.json(content);
                         if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
-                            fs.readFile(prePath, "utf-8", (err, preContent) => {
-                                if (err) {
-                                    return res.json({});
-                                }
-                                // req.clientIp  req.body.hostname  req.body.username
-                                if(req.body.hostname == 'neumann') {
-                                    fs.readFile(prePath2, "utf-8", (err, preContent2) => {
-                                        if (err) {
-                                            return res.json({});
-                                        }
-                                        return res.json(preContent2 + preContent + content);
-                                    });
-                                } else {
+                            // req.clientIp  req.body.hostname  req.body.username
+                            if(req.body.hostname == 'neumann') {
+                                fs.readFile(prePath2, "utf-8", (err, preContent2) => {
+                                    if (err) {
+                                        return res.json({});
+                                    }
+                                    return res.json(preContent2 + content);
+                                });
+                            } else {
+                                fs.readFile(prePath, "utf-8", (err, preContent) => {
+                                    if (err) {
+                                        return res.json({});
+                                    }
                                     return res.json(preContent + content);
-                                }
-                            });
+                                });
+                            }
                         }
                         else return res.json(content);
                     });
