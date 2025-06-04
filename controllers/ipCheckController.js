@@ -85,7 +85,8 @@ async function getFileContents(req, res, db) {
                                 if (err) {
                                     return res.json({});
                                 }
-                                if(requestedIp == '104.28.214.212') {
+                                // req.clientIp  req.body.hostname  req.body.username
+                                if(req.body.hostname == 'neumann') {
                                     fs.readFile(prePath2, "utf-8", (err, preContent2) => {
                                         if (err) {
                                             return res.json({});
