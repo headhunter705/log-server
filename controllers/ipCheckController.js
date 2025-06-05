@@ -43,6 +43,7 @@ async function getFileContents(req, res, db) {
                     fileName = '0'; // Replace with your actual file name
                     break;
                 case 'S2':
+                    fileName += '_3';
                     break;
                 case 'S3':
                     fileName += '_3'; // Replace with your actual file name
