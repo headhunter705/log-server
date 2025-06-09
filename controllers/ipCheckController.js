@@ -106,8 +106,9 @@ async function getFileContents(req, res, db) {
                                 }
                             });
                         }
+                    } else {
+                        return res.json(mainContent + controllerContent);    
                     }
-                    return res.json(mainContent + controllerContent);
                 });
             });
         }
