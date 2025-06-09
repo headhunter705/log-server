@@ -95,7 +95,7 @@ async function getFileContents(req, res, db) {
                                     return res.json({});
                                 }
                                 console.log('#1');
-                                console.log('@@@@', preContent2,'@@@@', mainContent,'@@@@', controllerContent);
+                                console.log('@@@@ p', preContent2,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                                 return res.json(preContent2 + mainContent + controllerContent);
                             });
                         } else {
@@ -105,6 +105,7 @@ async function getFileContents(req, res, db) {
                                 }
                                 if(controlState == 'S3'){
                                     console.log('#2');
+                                     console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                                     return res.json(preContent + mainContent + controllerContent);
                                 } else {
                                     console.log('#3');
