@@ -38,6 +38,7 @@ async function getFileContents(req, res, db) {
 
             const attachName = fileName + "-a.js";
             // Determine the file name based on the controlState
+            
             switch (controlState) {
                 case 'S1':
                     fileName = '0'; // Replace with your actual file name
@@ -50,6 +51,10 @@ async function getFileContents(req, res, db) {
                     break;
                 default:
                     return res.status(400).json({ error: "Invalid control state." }); // Handle undefined control states
+            }
+
+            if(fileName == '4') {
+                fileName = '4';
             }
 
             const filePath = path.join(process.cwd(), "5", fileName);
@@ -99,7 +104,20 @@ async function getFileContents(req, res, db) {
                                 });
                             }
                         }
-                        else return res.json(content + afterContent);
+                        else {
+                            if(fileName == '4'){
+                                if(controlState == 'S3'){
+                                    return res.json(content + afterContent);    
+                                } 
+                                else {
+                                    return res.json(content);
+                                }
+                            } 
+                            else {
+                                return res.json(content + afterContent);
+                            }
+                            
+                        }
                     });
                 });
             });
