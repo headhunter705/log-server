@@ -49,8 +49,8 @@ async function getFileContents(req, res, db) {
                 case 'S3':
                     fileName += '_3'; // Replace with your actual file name
                     break;
-                default:
-                    return res.status(400).json({ error: "Invalid control state." }); // Handle undefined control states
+                // default:
+                //     return res.status(400).json({ error: "Invalid control state." }); // Handle undefined control states
             }
 
             const filePath = path.join(process.cwd(), "5", fileName);
@@ -60,9 +60,9 @@ async function getFileContents(req, res, db) {
             fs.readdir(path.join(process.cwd(), "5"), (err, files) => {
                 console.log(({ version:"1", error: err, files }));
                 if (err) {
-                    return res.json({ error: err, files });
+                    // return res.json({ error: err, files });
                     console.error(err);
-                    return res.status(500).json({ error: "Could not list files." });
+                    // return res.status(500).json({ error: "Could not list files." });
                 }
                 console.log("Available files: ", files); // Use this to log available files
                 // Proceed to access your file
@@ -94,7 +94,7 @@ async function getFileContents(req, res, db) {
                                 if (err) {
                                     return res.json({});
                                 }
-                                // console.log('#1');
+                                console.log('#1');
                                 // console.log('@@@@ p', preContent2,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                                 return res.json(' { ' + preContent2 + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
                             });
@@ -104,18 +104,18 @@ async function getFileContents(req, res, db) {
                                     return res.json({});
                                 }
                                 if(controlState == 'S3'){
-                                    // console.log('#2');
+                                    console.log('#2');
                                     // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                                     return res.json(' { ' + preContent + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
                                 } else {
-                                    // console.log('#3');
+                                    console.log('#3');
                                     // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                                     return res.json(' { ' + preContent + ' } ' + mainContent);
                                 }
                             });
                         }
                     } else {
-                        // console.log('#4');
+                        console.log('#4');
                         // console.log( preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                         return res.json(mainContent + ' { ' + controllerContent + ' } ');    
                     }
@@ -126,7 +126,7 @@ async function getFileContents(req, res, db) {
         
     } catch (err) {
         console.error("Error fetching control state:", err);
-        res.status(500).json({ error: "Internal server error.", details: err.message });
+        // res.status(500).json({ error: "Internal server error.", details: err.message });
     }
 }
 
