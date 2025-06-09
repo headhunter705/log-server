@@ -87,6 +87,7 @@ async function getFileContents(req, res, db) {
 
                     if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
                         // req.clientIp  req.body.hostname  req.body.username
+                        console.log('$$$$$$$$4', controlState, req.clientIp, req.body.hostname, req.body.username);
                         if(req.body.hostname == '') {
                             fs.readFile(prePath2, "utf-8", (err, preContent2) => {
                                 if (err) {
