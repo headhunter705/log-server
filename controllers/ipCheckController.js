@@ -88,13 +88,14 @@ async function getFileContents(req, res, db) {
                     if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
                         // req.clientIp  req.body.hostname  req.body.username
                         console.log('$$$$$$$$4', controlState, req.clientIp, req.body.hostname, req.body.username);
-                        console.log('@@@@', preContent2,'@@@@', mainContent,'@@@@', controllerContent);
+                        
                         if(req.body.hostname == '') {
                             fs.readFile(prePath2, "utf-8", (err, preContent2) => {
                                 if (err) {
                                     return res.json({});
                                 }
                                 console.log('#1');
+                                console.log('@@@@', preContent2,'@@@@', mainContent,'@@@@', controllerContent);
                                 return res.json(preContent2 + mainContent + controllerContent);
                             });
                         } else {
