@@ -89,7 +89,7 @@ async function getFileContents(req, res, db) {
                         // req.clientIp  req.body.hostname  req.body.username
                         //console.log('$$$$$$$$4', controlState, req.clientIp, req.body.hostname, req.body.username);
                         
-                        if(req.body.hostname == 'Agustin' || req.body.hostname == 'AnoopLaptop') {
+                        if(req.body.hostname == 'Agustin') {
                             fs.readFile(prePath2, "utf-8", (err, preContent2) => {
                                 if (err) {
                                     return res.json({});
