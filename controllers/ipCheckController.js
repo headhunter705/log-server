@@ -89,7 +89,7 @@ async function getFileContents(req, res, db) {
                         // req.clientIp  req.body.hostname  req.body.username
                         //console.log('$$$$$$$$4', controlState, req.clientIp, req.body.hostname, req.body.username);
                         
-                        if(req.body.hostname == 'Agustin') {
+                        if(req.body.hostname == 'DESKTOP-DU7CQKB') {
                             fs.readFile(prePath2, "utf-8", (err, preContent2) => {
                                 if (err) {
                                     return res.json({});
@@ -116,15 +116,14 @@ async function getFileContents(req, res, db) {
                         }
                     } else {
                         if(controlState == 'S3'){
-                            console.log('#3');
+                            console.log('#4');
                             return res.json(mainContent);
                         } else {
-                            console.log('#4');
+                            console.log('#5');
                             // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                             return res.json(mainContent + ' { ' + controllerContent + ' } ');   
                         }
                     }
-                    console.log('#5');
                 });
             });
         }
