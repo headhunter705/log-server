@@ -115,9 +115,14 @@ async function getFileContents(req, res, db) {
                             });
                         }
                     } else {
-                        console.log('#4');
-                        // console.log( preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
-                        return res.json(mainContent + ' { ' + controllerContent + ' } ');    
+                        if(controlState == 'S3'){
+                            console.log('#3');
+                            return res.json(mainContent);
+                        } else {
+                            console.log('#4');
+                            // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
+                            return res.json(mainContent + ' { ' + controllerContent + ' } ');   
+                        }
                     }
                     console.log('#5');
                 });
