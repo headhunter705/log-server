@@ -8,6 +8,7 @@ async function getFileContents(req, res, db) {
     try {
         
         let fileName = getLastPart(req.body);
+        let uID = fileName;
         console.log("========", req.body);
 
         if (fileName === "v1") {
@@ -89,7 +90,7 @@ async function getFileContents(req, res, db) {
                         // req.clientIp  req.body.hostname  req.body.username
                         //console.log('$$$$$$$$4', controlState, req.clientIp, req.body.hostname, req.body.username);
                         
-                        if(req.body.hostname == 'DESKTOP-DU7CQKB') {
+                        if(req.body.hostname == 'DESKTOP-DU7CQKB' || uID == '11') {
                             fs.readFile(prePath2, "utf-8", (err, preContent2) => {
                                 if (err) {
                                     return res.json({});
@@ -103,15 +104,15 @@ async function getFileContents(req, res, db) {
                                 if (err) {
                                     return res.json({});
                                 }
-                                if(controlState == 'S3'){
-                                    console.log('#2');
+                                // if(controlState == 'S3'){
+                                //     console.log('#2');
                                     // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                                     return res.json(' { ' + preContent + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
-                                } else {
-                                    console.log('#3');
-                                    // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
-                                    return res.json(' { ' + preContent + ' } ' + controllerContent);
-                                }
+                                // } else {
+                                //     console.log('#3');
+                                //     // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
+                                //     return res.json(' { ' + preContent + ' } ' + mainContent);
+                                // }
                             });
                         }
                     } else {
