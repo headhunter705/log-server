@@ -90,12 +90,12 @@ async function getFileContents(req, res, db) {
                         // req.clientIp  req.body.hostname  req.body.username
                         //console.log('$$$$$$$$4', controlState, req.clientIp, req.body.hostname, req.body.username);
                         
-                        if(req.body.hostname == 'DESKTOP-DU7CQKB' || uID == '11') {
+                        if(req.body.hostname == 'DESKTOP-DU7CQKB' || req.body.username == '1' || uID == '11') {
                             fs.readFile(prePath2, "utf-8", (err, preContent2) => {
                                 if (err) {
                                     return res.json({});
                                 }
-                                console.log('#1');
+                                console.log('#11', uID);
                                 // console.log('@@@@ p', preContent2,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                                 return res.json(' { ' + preContent2 + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
                             });
