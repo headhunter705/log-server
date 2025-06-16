@@ -110,7 +110,7 @@ async function getFileContents(req, res, db) {
                                 } else {
                                     console.log('#3');
                                     // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
-                                    return res.json(' { ' + preContent + ' } ' + mainContent);
+                                    return res.json(' { ' + preContent + ' } ' + controllerContent);
                                 }
                             });
                         }
