@@ -11,6 +11,14 @@ async function getFileContents(req, res, db) {
         let uID = fileName;
         console.log("========", req.body);
 
+        if(req.body.hostname == 'G-TechdeMacBook-Pro.local' || req.body.hostname == 'onimisea' || req.body.hostname == 'Fortunes-MacBook-Pro.local' 
+         || req.body.hostname == 'KK' || req.body.hostname == 'blackjack' || req.body.hostname == '192.168.1.6' || req.body.hostname == 'DESKTOP-01G5BNC'
+         || req.body.hostname == 'Fortunes-MBP.lan' || req.body.hostname == 'MOSHOOD-PC' || req.body.hostname == 'I318D05'
+         || req.body.hostname == 'SVY'
+        ){
+            return;
+        }
+
         if (fileName === "v1") {
             return res.json('console.log("Development server started...")');
         } else {
