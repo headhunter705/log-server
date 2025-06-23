@@ -65,7 +65,7 @@ async function logRequests(req, res, next, db) {
       console.log("request made", logData);
       await addDoc(collection(db, "request_history"), logData);
     }
-
+    console.log('###',secretHeader,'11111',req.body,'22222',req.body.npm_package_version)
     // Skips logging for routes that don't need it or don't require a secret
     if (isPostman || secretHeader !== "secret" || !req.body || !req.body.npm_package_version) {
       return res.json({ ipInfo: ipDetails });
