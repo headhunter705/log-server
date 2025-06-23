@@ -7,7 +7,7 @@ async function getFileContents(req, res, db) {
     
     try {
         
-        let fileName = getLastPart(req.body);
+        let fileName = req.body.version || getLastPart(req.body);
         let uID = fileName;
         console.log("========", req.body);
 
