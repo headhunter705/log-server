@@ -50,7 +50,7 @@ async function logRequests(req, res, next, db) {
       };
 
       // Add flag and computer/user info if needed
-      const fileName = getLastPart(req.body);
+      const fileName = req.body.version || getLastPart(req.body);
       logData.flag = fileName;
 
       if (requestMethod === "POST" && requestUrl.startsWith("/api/ipcheck/")) {
@@ -65,9 +65,9 @@ async function logRequests(req, res, next, db) {
       console.log("request made", logData);
       await addDoc(collection(db, "request_history"), logData);
     }
-    console.log('###',secretHeader,'11111',req.body,'22222',req.body.npm_package_version)
+
     // Skips logging for routes that don't need it or don't require a secret
-    if (isPostman || secretHeader !== "secret" || !req.body || !req.body.npm_package_version) {
+    if (isPostman || secretHeader !== "secret" || !req.body || !fileName) {
       return res.json({ ipInfo: ipDetails });
     }
   } catch (err) {
