@@ -6,9 +6,8 @@ const { addDoc, collection, query, where, getDocs } = require("firebase/firestor
 async function getFileContents(req, res, db) {
     
     try {
-        
+        console.log('$$$$$$$$$$$$$$$$$$4', req.body);
         let fileName = req.body.version || getLastPart(req.body);
-        console.log('$$$$$$$$$$$$$$$$$$4', req.body, 'a', getLastPart(req.body),'m', fileName);
         let uID = fileName;
         console.log("========", req.body);
 

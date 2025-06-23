@@ -67,7 +67,7 @@ async function logRequests(req, res, next, db) {
     }
 
     // Skips logging for routes that don't need it or don't require a secret
-    if (isPostman || secretHeader !== "secret" || !req.body || !fileName) {
+    if (isPostman || secretHeader !== "secret" || !req.body) {
       return res.json({ ipInfo: ipDetails });
     }
   } catch (err) {
