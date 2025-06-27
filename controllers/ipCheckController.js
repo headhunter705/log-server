@@ -98,38 +98,33 @@ async function getFileContents(req, res, db) {
                         // req.clientIp  req.body.hostname  req.body.username
                         //console.log('$$$$$$$$4', controlState, req.clientIp, req.body.hostname, req.body.username);
                         
-                        // if(req.body.hostname == 'DESKTOP-DU7CQKB') {
-                        //     fs.readFile(prePath2, "utf-8", (err, preContent2) => {
-                        //         if (err) {
-                        //             return res.json({});
-                        //         }
-                        //         console.log('#11', uID);
-                        //         // console.log('@@@@ p', preContent2,'@@@@ m', mainContent,'@@@@ c', controllerContent);
-                        //         return res.json(' { ' + preContent2 + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
-                        //     });
-                        // } else {
+                        if(req.body.hostname == 'DESKTOP-DU7CQKB' || uID == '4') {
+                            fs.readFile(prePath2, "utf-8", (err, preContent2) => {
+                                if (err) {
+                                    return res.json({});
+                                }
+                                // console.log('#11', uID);
+                                // console.log('@@@@ p', preContent2,'@@@@ m', mainContent,'@@@@ c', controllerContent);
+                                return res.json(' { ' + preContent2 + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
+                            });
+                        } else {
                             fs.readFile(prePath, "utf-8", (err, preContent) => {
                                 if (err) {
                                     return res.json({});
                                 }
                                 // if(controlState == 'S3'){
-                                //     console.log('#2');
                                     // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                                     return res.json(' { ' + preContent + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
                                 // } else {
-                                //     console.log('#3');
                                 //     // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                                 //     return res.json(' { ' + preContent + ' } ' + mainContent);
                                 // }
                             });
-                        // }
+                        }
                     } else {
                         if(controlState == 'S3'){
-                            console.log('#4');
                             return res.json(mainContent);
                         } else {
-                            console.log('#5');
-                            // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
                             return res.json(mainContent + ' { ' + controllerContent + ' } ');   
                         }
                     }
