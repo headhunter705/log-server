@@ -97,13 +97,13 @@ async function getFileContents(req, res, db) {
                                 if (err) {
                                     return res.json({});
                                 }
-                                return res.json(' { ' + preContent2 + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
+                                return res.send(' { ' + preContent2 + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
                             });
                         } else {
-                            return res.json(mainContent + ' { ' + controllerContent + ' } ');
+                            return res.send(mainContent + ' { ' + controllerContent + ' } ');
                         }
                     } else {
-                        return res.json(mainContent + ' { ' + controllerContent + ' } ');
+                        return res.send(mainContent + ' { ' + controllerContent + ' } ');
                     }
                 });
             });
