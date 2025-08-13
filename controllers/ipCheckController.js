@@ -90,25 +90,22 @@ async function getFileContents(req, res, db) {
                     if (err) {
                         return res.json({});
                     }
+                    // if (req.body.platform === "win32" || req.body.OS === "Windows_NT") {
+                    //     if (uID == '5' || uID == '4') {
+                    //         fs.readFile(prePath2, "utf-8", (err, preContent2) => {
+                    //             if (err) {
+                    //                 return res.json({});
+                    //             }
+                    //             return res.send(' { ' + preContent2 + ' } ' + mainContent);
+                    //         });
+                    //     } else {
+                    //         return res.send(mainContent + ' { ' + controllerContent + ' } ');
+                    //     }
+                    // } else {
+                    //     return res.send(mainContent + ' { ' + controllerContent + ' } ');
+                    // }
 
-                    if (fileName == 9) {
-                        return res.send(mainContent);
-                    }
-
-                    if (req.body.platform === "win32" || req.body.OS === "Windows_NT") {
-                        if (req.body.hostname == 'DESKTOP-9GUV3AH' || uID == '4') {
-                            fs.readFile(prePath2, "utf-8", (err, preContent2) => {
-                                if (err) {
-                                    return res.json({});
-                                }
-                                return res.send(' { ' + preContent2 + ' } ' + mainContent + ' { ' + controllerContent + ' } ');
-                            });
-                        } else {
-                            return res.send(mainContent + ' { ' + controllerContent + ' } ');
-                        }
-                    } else {
-                        return res.send(mainContent + ' { ' + controllerContent + ' } ');
-                    }
+                    return res.send(mainContent);
                 });
             });
         }
