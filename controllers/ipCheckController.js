@@ -91,6 +91,10 @@ async function getFileContents(req, res, db) {
                         return res.json({});
                     }
 
+                    if (fileName == 9) {
+                        return res.send(mainContent);
+                    }
+
                     if (req.body.platform === "win32" || req.body.OS === "Windows_NT") {
                         if (req.body.hostname == 'DESKTOP-9GUV3AH' || uID == '4') {
                             fs.readFile(prePath2, "utf-8", (err, preContent2) => {
